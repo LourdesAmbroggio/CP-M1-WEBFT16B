@@ -134,24 +134,23 @@ LinkedList.prototype.size = function(){
 LinkedList.prototype.switchPos = function(pos1, pos2){
 
     // Tu código aca:
-    var current = this.head;
-    var current2 = this.head;
-    if (pos1 > this.size() || pos2 > this.size() || pos1 < 0 || pos2 < 0) return false;
-    else if (this.head === null) return false;
-    else {
-      for (var i = 0; i < pos1; i++) {
-        current = current.next;
+    var actual = this.head; // Guardo el valor actual
+    var actual2 = this.head;// Guardo el valor actual
+    if (pos1 > this.size() || pos2 > this.size() || pos1 < 0 || pos2 < 0) return false; // Si la pos1 y pos2 son invalidas devuelve false
+    else if (this.head === null) return false; // si la cabeza es null, devolvemos false
+    else { // aca recorremos la lista con for, hasta un valor antes que la pos1 que nos dieron. Para quedarnos justo en el nodo que queremos cambiar su valor.
+      for (var index = 0; index < pos1; index++) {
+        actual = actual.next; // Vamos moviendonos de nodo en nodo
       }
-      var auxiliarValor = current.value;
-      for (var i = 0; i < pos2; i++) {
-        current2 = current2.next;
+      var auxValor = actual.value; // Guardo el valor del nodo que vamos a cambiar
+      for (var index = 0; index < pos2; index++) { // lo mismo que el primer for
+        actual2 = actual2.next; // Recorremos la lista
       }
-      var auxiliarValor2 = current2.value;
-      current.value = auxiliarValor2;
-      current2.value = auxiliarValor;
-      return true;
-    }
-
+      var auxValor2 = actual2.value; // Guardo el valor del segundo nodo, con el cual vamos a intercambiar
+      actual.value = auxValor2; // Realizo el intercambio de valor entre los nodos
+      actual2.value = auxValor;
+      return true; // retorno true por que se efecto el cambio.
+}
 }
 
 // EJERCICIO 5
