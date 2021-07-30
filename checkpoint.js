@@ -40,6 +40,8 @@ const {
 var isAncestor = function(genealogyTree, ancestor, descendant){
   // Tu código aca:
 
+
+
 }
 
 
@@ -98,7 +100,19 @@ function secuenciaHenry(obj, n) {
 
 LinkedList.prototype.size = function(){
   // Tu código aca:
-
+  var longitud = 0; // Aca guardamos el valor del tamaño de la lista.
+  if(this.head === null){ // Primero preguntamos si el indicador de la cabeza apunta a null.
+    return 0; // Si es asi que retorne 0, porque no tiene valor
+  } 
+    else {
+      var current = this.head; // Guardamos el nodo acutal en current
+      longitud+=1; // como nos aseguramos de que ya hay un elemento, aumentamos la longitud en 1
+      while (current.next) { // Mientras el indicador de current sea distinto de null, repetimos
+        longitud+= 1; // aumentamos la longitud en 1
+        current = current.next; // iteramos al siguiente nodo
+    }
+    return (longitud); // devolvemos el tamanio de la lista
+  }
 }
 
 
@@ -118,7 +132,25 @@ LinkedList.prototype.size = function(){
 //    Suponiendo que se pide una posición inválida: removeFromPos(8) --> false
 
 LinkedList.prototype.switchPos = function(pos1, pos2){
-  // Tu código aca:
+
+    // Tu código aca:
+    var current = this.head;
+    var current2 = this.head;
+    if (pos1 > this.size() || pos2 > this.size() || pos1 < 0 || pos2 < 0) return false;
+    else if (this.head === null) return false;
+    else {
+      for (var i = 0; i < pos1; i++) {
+        current = current.next;
+      }
+      var auxiliarValor = current.value;
+      for (var i = 0; i < pos2; i++) {
+        current2 = current2.next;
+      }
+      var auxiliarValor2 = current2.value;
+      current.value = auxiliarValor2;
+      current2.value = auxiliarValor;
+      return true;
+    }
 
 }
 
@@ -134,9 +166,27 @@ LinkedList.prototype.switchPos = function(pos1, pos2){
 // El nodo 1 de la lista 1, se conecta con el nodo 1 de la lista 2.
 // Continuando con el nodo 2 de la lista 2, conectandose con el nodo 2 de la lista 2.
 var mergeLinkedLists = function(linkedListOne, linkedListTwo){
-  // Tu código aca:
+  
+    var mergelista = new LinkedList(); // creo la nueva lista, en la cual voy a agregar los nodos intercalados.
+    var current1 = linkedListOne.head // guardo primer elmento de la lista uno
+    var current2 = linkedListTwo.head // guardo primer elmento de la lista uno
+  
+    if( linkedListOne.head === null ){ // si la lista uno esta vacia
+      return linkedListTwo; // retorno solo la lista 2
+    } else if (linkedListTwo.head === null){ // si la lista 2 esta vacia
+      return linkedListOne; // retorno la lista uno
+    }
+  
+    while (current1 !== null && current2 !== null) { // Mientras el nodo1 y el nodo 2 sean distintos de null
+      mergelista.add(current1.value) // agrego el nodo1 a la nueva lista
+      mergelista.add(current2.value) // agrego el nodo2 a la nueva lista
+  
+      current1 = current1.next; // me muevo al siguiente nodo de la lista 1
+      current2 = current2.next; // me muevo al siguiente nodo de la lista 2
+    }
+    return mergelista // Devuelvo la lista mergeada
+  };
 
-}
 
 
 // ----------------------
@@ -208,7 +258,35 @@ var cardGame = function(playerOneCards, playerTwoCards){
 BinarySearchTree.prototype.height = function(){
   // Tu código aca:
 
+   //Caso base (nodos hoja) - El corte es cuando llegamos al nodo hoja, porque ya no tiene ningun nodo asociado y de ahi comenzamos a subir
+  if (!this.value) {
+    return 0;
+  }
+
+
+  if (this.left === null && this.right === null) { //No tengo left y tampoco right, por lo que este es un nodo hoja
+    return 1;
+  }
+
+ //si no tengo hijo en el lado izquierdo y si derecho
+  if (this.left === null) {
+    return 1 + this.right.height(); //Aca devuelvo 1 por el nodo hoja + la altura del hijo derecho
+  }
+
+//si tengo hijo en el lado izquierdo y no derecho
+  if (this.right === null) {
+    return 1 + this.left.height(); //Aca devuelvo 1 por el nodo hoja + la altura del hijo izquierdo
+  }
+
+  // Con Math.max verifico cual es el más largo de ambos
+  var left = this.left.height()
+  var right = this.right.height()
+
+  return 1 + Math.max(left, right) //Aca devuelvo la altura máxima 
+
 }
+
+
 
 
 // ---------------
@@ -230,7 +308,25 @@ BinarySearchTree.prototype.height = function(){
 var binarySearch = function (array, target) {
   // Tu código aca:
 
+  var indexUno  = 0; // Defino mi primer posicion
+  var indexUltimo  = array.length - 1; // Defino la ultima posicion
+  var indexMedio = Math.floor((indexUltimo + indexUno)/2); // Defino el indice del medio del arraglo
+  
+  while(array[indexMedio] != target && indexUno < indexUltimo) // Mientras el valor del indice del medio sea distinto del valor a buscar y el incide uno sea menor al ultimo
+  {
+  if (target < array[indexMedio]) // Si el valor a buscar es menor que el valor con indice medio
+    {
+      indexUltimo = indexMedio - 1; // Esto quiere decir que el valor a buscar esta entre los indices bajos. Por eso cambio el indice ultimo por el del medio menos 1
+    } 
+  else if (target > array[indexMedio]) // si el valor a buscar es mayor que el del medio.
+    {
+        indexUno = indexMedio + 1; // Esto quiere decir que el valor a buscar esta entre los indices altos. Por eso cambio el indice uno
+    }
+    indexMedio = Math.floor((indexUltimo + indexUno)/2); // Cambio el valor del indice del medio y sigo iterando
+  }
+  return (array[indexMedio] === target) ? indexMedio : -1; // Retorno el valor del indice si esta ahi el valor o si no esta retorno el -1
 }
+
 
 // EJERCICIO 9
 // Ordená un arreglo de objetos usando un bubble sort pero con algunas particularidades.
@@ -255,10 +351,24 @@ var binarySearch = function (array, target) {
 //   {name: 'Leo', age: 40, height: 1.83}
 // ]
 
-var specialSort = function(array, orderFunction) {
+var specialSort = function (array, orderFunction) {
   // Tu código aca:
+  var seguirCambiando = true; //Aca defino una bandera, para poder seguir iterando en caso de que el arreglo siga desordenado
 
-}
+  do { //para repetir el proceso
+    seguirCambiando = false; //Aca pongo la bandera para indicar la iteración
+    for (var i = 0; i < array.length - 1; i++) {
+      if (orderFunction(array[i], array[i + 1]) === -1) { //Aca comparo si los elementos del array estan desordenados
+        var auxCambio = array[i + 1]; //Para guardar el valor del elemento siguiente para realizar el cambio
+        array[i+1] = array[i]; //Asigno el elemento en la posición [i] a la posición i + 1
+        array[i] = auxCambio; //Aca asigno mi elemento guardaro 
+        seguirCambiando = true; //Aca pongo la bandera en true para indicar que hubo un cambio
+      }
+    }
+  } while (seguirCambiando); //Aca pregunto si hubo en cambio y si lo hubo repetimos
+  return array;
+};
+
 
 // ----- Closures -----
 
@@ -290,6 +400,19 @@ var specialSort = function(array, orderFunction) {
 
 function closureDetect(symptoms, min) {
   // Tu código aca:
+
+ return function (paciente) { // Aca retorno la funcion interna el cual recibe un objeto paciente como argumento
+    var cantidadSintomas = 0; // Defino la variable con la cual cuento la cantidad de sintomas del paciente
+    var i = 0 // defino la variable con la que voy a iterar el arreglo de sintomas
+    do { // comienza el loop para ver si un paciente supera el numero de sintomas o no.
+      if (symptoms.includes(paciente.symptoms[i])) { // con el metodo includes, verifico que si el sintoma del paciente se enecuntra dentro del array
+        cantidadSintomas++; // si el sintoma se encuentra, entonces sumo +1 al contador
+      }
+      i++; // aumento la variable para seguir iterando
+    } while (i < symptoms.length); // mientras el indice sea menor al numero al tamaño del arreglo de sintomas seguir repitiendo.
+    if (cantidadSintomas >= min) return true; // si el numero de sintomas del paciente es mayor o igual retorno verdader
+    return false; // retorno falso en caso contrario
+  }
 
 }
 
